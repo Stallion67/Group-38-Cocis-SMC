@@ -1,0 +1,34 @@
+# Security officer (NFC tag, 7-byte UID) enters on the left reader and
+# leaves on the right reader. Security cards work at any hour, so this
+# test passes whatever the simulated time is.
+name: SCMS RFID entry and exit
+version: 1
+steps:
+  - wait-serial: "[ENTRANCE] terminal ready"
+  - set-control:
+      part-id: entry_rfid
+      control: card
+      value: 4
+  - set-control:
+      part-id: entry_rfid
+      control: tagPresent
+      value: 1
+  - wait-serial: "ENTRY uid=04112233445566 name=Mugisha Peter GRANTED"
+  - set-control:
+      part-id: entry_rfid
+      control: tagPresent
+      value: 0
+  - delay: 2000ms
+  - set-control:
+      part-id: exit_rfid
+      control: card
+      value: 4
+  - set-control:
+      part-id: exit_rfid
+      control: tagPresent
+      value: 1
+  - wait-serial: "EXIT uid=04112233445566 name=Mugisha Peter GRANTED"
+  - set-control:
+      part-id: exit_rfid
+      control: tagPresent
+      value: 0

@@ -1,0 +1,8 @@
+# Boot: all three terminals start and report ready.
+name: SCMS boot check
+version: 1
+steps:
+  - wait-serial: "[ROOM1] terminal ready"
+  - wait-serial: "[ROOM2] terminal ready"
+  - wait-serial: "[ENTRANCE] terminal ready"
+  - wait-serial: "[SYSTEM] all terminals running"

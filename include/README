@@ -1,0 +1,2 @@
+Public headers, one folder per component (include/<component>/<file>.h).
+Components include each other only through these headers.

@@ -1,0 +1,12 @@
+Host tests (no ESP32 needed). From the repository root:
+
+  sh scripts/test-all.sh                 Linux, macOS, Git Bash
+  ./scripts/test-all.ps1 -Compiler gcc   Windows PowerShell
+
+test_entrance.c     access rules in components/entrance/core.c
+test_rooms.c        lighting rules in components/rooms/core.c
+test_auth_keypad.c  login sessions and the keypad menu
+test_wiring.py      diagram.json against include/common/config.h
+
+These tests cover logic, not electrical behaviour. Wokwi scenarios in
+scenarios/ cover the RFID readers in the simulator.

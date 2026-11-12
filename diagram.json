@@ -1,0 +1,636 @@
+{
+  "version": 1,
+  "author": "CoCIS SCMS group",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {
+        "builder": "esp-idf"
+      }
+    },
+    {
+      "type": "board-mfrc522",
+      "id": "entry_rfid",
+      "top": -330,
+      "left": -420,
+      "attrs": {
+        "uid": "A1:B2:C3:D4"
+      }
+    },
+    {
+      "type": "board-mfrc522",
+      "id": "exit_rfid",
+      "top": -330,
+      "left": 330,
+      "attrs": {
+        "uid": "A1:B2:C3:D4"
+      }
+    },
+    {
+      "type": "wokwi-servo",
+      "id": "door_entry",
+      "top": -150,
+      "left": -460,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-servo",
+      "id": "door_exit",
+      "top": -150,
+      "left": 380,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "exit_pulldown",
+      "top": -40,
+      "left": 380,
+      "attrs": {
+        "value": "10000"
+      }
+    },
+    {
+      "type": "wokwi-buzzer",
+      "id": "buzzer",
+      "top": -160,
+      "left": -160,
+      "attrs": {
+        "volume": "0.2"
+      }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn_emergency",
+      "top": 20,
+      "left": -330,
+      "attrs": {
+        "color": "red",
+        "label": "BREAK GLASS"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "emerg_pullup",
+      "top": 90,
+      "left": -330,
+      "attrs": {
+        "value": "10000"
+      }
+    },
+    {
+      "type": "wokwi-lcd2004",
+      "id": "lcd",
+      "top": -330,
+      "left": -120,
+      "attrs": {
+        "pins": "i2c"
+      }
+    },
+    {
+      "type": "wokwi-ds1307",
+      "id": "rtc",
+      "top": 120,
+      "left": 250,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-microsd-card",
+      "id": "sd",
+      "top": 230,
+      "left": 250,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "sd_cs_pullup",
+      "top": 330,
+      "left": 250,
+      "attrs": {
+        "value": "10000"
+      }
+    },
+    {
+      "type": "wokwi-membrane-keypad",
+      "id": "keypad",
+      "top": 260,
+      "left": -380,
+      "attrs": {
+        "columns": "3"
+      }
+    },
+    {
+      "type": "wokwi-pir-motion-sensor",
+      "id": "pir1",
+      "top": 470,
+      "left": -120,
+      "attrs": {
+        "delayTime": "3"
+      }
+    },
+    {
+      "type": "wokwi-pir-motion-sensor",
+      "id": "pir2",
+      "top": 470,
+      "left": 140,
+      "attrs": {
+        "delayTime": "3"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "light1",
+      "top": 420,
+      "left": -10,
+      "attrs": {
+        "color": "yellow",
+        "label": "Room 1 lights"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "light2",
+      "top": 420,
+      "left": 250,
+      "attrs": {
+        "color": "yellow",
+        "label": "Room 2 lights"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r_light1",
+      "top": 480,
+      "left": 20,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r_light2",
+      "top": 480,
+      "left": 280,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-photoresistor-sensor",
+      "id": "ldr",
+      "top": 600,
+      "left": -40,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-text",
+      "id": "t_title",
+      "top": -400,
+      "left": -60,
+      "attrs": {
+        "text": "CoCIS Smart Control and Monitoring System (one ESP32, 3 terminals)"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "t_entry",
+      "top": -360,
+      "left": -420,
+      "attrs": {
+        "text": "ENTRY reader (left)"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "t_exit",
+      "top": -360,
+      "left": 330,
+      "attrs": {
+        "text": "EXIT reader (right)"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "t_rooms",
+      "top": 440,
+      "left": -200,
+      "attrs": {
+        "text": "Room 1 (top) | Room 2 (bottom) | shared daylight LDR"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "entry_rfid:3.3V",
+      "esp:3V3",
+      "red",
+      []
+    ],
+    [
+      "entry_rfid:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "entry_rfid:SCK",
+      "esp:18",
+      "blue",
+      []
+    ],
+    [
+      "entry_rfid:MOSI",
+      "esp:23",
+      "orange",
+      []
+    ],
+    [
+      "entry_rfid:MISO",
+      "esp:19",
+      "green",
+      []
+    ],
+    [
+      "entry_rfid:SDA",
+      "esp:5",
+      "purple",
+      []
+    ],
+    [
+      "entry_rfid:RST",
+      "esp:3V3",
+      "red",
+      []
+    ],
+    [
+      "exit_rfid:3.3V",
+      "esp:3V3",
+      "red",
+      []
+    ],
+    [
+      "exit_rfid:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "exit_rfid:SCK",
+      "esp:18",
+      "blue",
+      []
+    ],
+    [
+      "exit_rfid:MOSI",
+      "esp:23",
+      "orange",
+      []
+    ],
+    [
+      "exit_rfid:MISO",
+      "esp:19",
+      "green",
+      []
+    ],
+    [
+      "exit_rfid:SDA",
+      "esp:13",
+      "purple",
+      []
+    ],
+    [
+      "exit_rfid:RST",
+      "esp:3V3",
+      "red",
+      []
+    ],
+    [
+      "sd:VCC",
+      "esp:3V3",
+      "red",
+      []
+    ],
+    [
+      "sd:GND",
+      "esp:GND.2",
+      "black",
+      []
+    ],
+    [
+      "sd:SCK",
+      "esp:18",
+      "blue",
+      []
+    ],
+    [
+      "sd:DI",
+      "esp:23",
+      "orange",
+      []
+    ],
+    [
+      "sd:DO",
+      "esp:19",
+      "green",
+      []
+    ],
+    [
+      "sd:CS",
+      "esp:2",
+      "purple",
+      []
+    ],
+    [
+      "sd_cs_pullup:1",
+      "esp:2",
+      "purple",
+      []
+    ],
+    [
+      "sd_cs_pullup:2",
+      "esp:3V3",
+      "red",
+      []
+    ],
+    [
+      "lcd:VCC",
+      "esp:5V",
+      "red",
+      []
+    ],
+    [
+      "lcd:GND",
+      "esp:GND.2",
+      "black",
+      []
+    ],
+    [
+      "lcd:SDA",
+      "esp:21",
+      "green",
+      []
+    ],
+    [
+      "lcd:SCL",
+      "esp:22",
+      "blue",
+      []
+    ],
+    [
+      "rtc:5V",
+      "esp:5V",
+      "red",
+      []
+    ],
+    [
+      "rtc:GND",
+      "esp:GND.2",
+      "black",
+      []
+    ],
+    [
+      "rtc:SDA",
+      "esp:21",
+      "green",
+      []
+    ],
+    [
+      "rtc:SCL",
+      "esp:22",
+      "blue",
+      []
+    ],
+    [
+      "door_entry:V+",
+      "esp:5V",
+      "red",
+      []
+    ],
+    [
+      "door_entry:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "door_entry:PWM",
+      "esp:27",
+      "orange",
+      []
+    ],
+    [
+      "door_exit:V+",
+      "esp:5V",
+      "red",
+      []
+    ],
+    [
+      "door_exit:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "door_exit:PWM",
+      "esp:12",
+      "orange",
+      []
+    ],
+    [
+      "exit_pulldown:1",
+      "esp:12",
+      "orange",
+      []
+    ],
+    [
+      "exit_pulldown:2",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "buzzer:2",
+      "esp:4",
+      "red",
+      []
+    ],
+    [
+      "buzzer:1",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "btn_emergency:1.l",
+      "esp:VN",
+      "red",
+      []
+    ],
+    [
+      "btn_emergency:2.l",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "emerg_pullup:1",
+      "esp:VN",
+      "red",
+      []
+    ],
+    [
+      "emerg_pullup:2",
+      "esp:3V3",
+      "red",
+      []
+    ],
+    [
+      "keypad:R1",
+      "esp:14",
+      "blue",
+      []
+    ],
+    [
+      "keypad:R2",
+      "esp:15",
+      "blue",
+      []
+    ],
+    [
+      "keypad:R3",
+      "esp:16",
+      "blue",
+      []
+    ],
+    [
+      "keypad:R4",
+      "esp:17",
+      "blue",
+      []
+    ],
+    [
+      "keypad:C1",
+      "esp:32",
+      "green",
+      []
+    ],
+    [
+      "keypad:C2",
+      "esp:33",
+      "green",
+      []
+    ],
+    [
+      "keypad:C3",
+      "esp:0",
+      "green",
+      []
+    ],
+    [
+      "pir1:VCC",
+      "esp:5V",
+      "red",
+      []
+    ],
+    [
+      "pir1:GND",
+      "esp:GND.3",
+      "black",
+      []
+    ],
+    [
+      "pir1:OUT",
+      "esp:34",
+      "orange",
+      []
+    ],
+    [
+      "pir2:VCC",
+      "esp:5V",
+      "red",
+      []
+    ],
+    [
+      "pir2:GND",
+      "esp:GND.3",
+      "black",
+      []
+    ],
+    [
+      "pir2:OUT",
+      "esp:35",
+      "orange",
+      []
+    ],
+    [
+      "light1:A",
+      "esp:26",
+      "orange",
+      []
+    ],
+    [
+      "light1:C",
+      "r_light1:1",
+      "black",
+      []
+    ],
+    [
+      "r_light1:2",
+      "esp:GND.3",
+      "black",
+      []
+    ],
+    [
+      "light2:A",
+      "esp:25",
+      "orange",
+      []
+    ],
+    [
+      "light2:C",
+      "r_light2:1",
+      "black",
+      []
+    ],
+    [
+      "r_light2:2",
+      "esp:GND.3",
+      "black",
+      []
+    ],
+    [
+      "ldr:VCC",
+      "esp:3V3",
+      "red",
+      []
+    ],
+    [
+      "ldr:GND",
+      "esp:GND.3",
+      "black",
+      []
+    ],
+    [
+      "ldr:AO",
+      "esp:VP",
+      "green",
+      []
+    ]
+  ],
+  "dependencies": {}
+}

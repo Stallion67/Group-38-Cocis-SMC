@@ -1,0 +1,13 @@
+# VS Code Wokwi extension / wokwi-cli configuration.
+# Build first with PlatformIO (pio run -e esp32dev), then "Wokwi: Start Simulator".
+[wokwi]
+version = 1
+firmware = ".pio/build/esp32dev/firmware.bin"
+elf = ".pio/build/esp32dev/firmware.elf"
+# Serial bridge on 4001 so another project can keep 4000.
+rfc2217ServerPort = 4001
+
+# Web dashboard through the Private IoT Gateway: http://localhost:9080/
+[[net.forward]]
+from = "localhost:9080"
+to = "target:80"

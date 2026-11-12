@@ -1,0 +1,24 @@
+# Unknown card, blocked card, unknown card again: the third failure
+# within 60 s locks the entry reader for 30 s and sounds the alarm.
+name: SCMS failed scan alert
+version: 1
+steps:
+  - wait-serial: "[ENTRANCE] terminal ready"
+  - set-control: { part-id: entry_rfid, control: card, value: 3 }
+  - set-control: { part-id: entry_rfid, control: tagPresent, value: 1 }
+  - wait-serial: "uid=AABBCCDD name=UNKNOWN DENIED (UNKNOWN_CARD)"
+  - set-control: { part-id: entry_rfid, control: tagPresent, value: 0 }
+  - delay: 2000ms
+  - set-control: { part-id: entry_rfid, control: card, value: 5 }
+  - set-control: { part-id: entry_rfid, control: tagPresent, value: 1 }
+  - wait-serial: "uid=C0FFEE99 name=Blocked Student DENIED (CARD_BLOCKED)"
+  - set-control: { part-id: entry_rfid, control: tagPresent, value: 0 }
+  - delay: 2000ms
+  - set-control: { part-id: entry_rfid, control: card, value: 3 }
+  - set-control: { part-id: entry_rfid, control: tagPresent, value: 1 }
+  - wait-serial: "3 failed scans"
+  - set-control: { part-id: entry_rfid, control: tagPresent, value: 0 }
+  - delay: 2000ms
+  - set-control: { part-id: entry_rfid, control: card, value: 4 }
+  - set-control: { part-id: entry_rfid, control: tagPresent, value: 1 }
+  - wait-serial: "DENIED (READER_LOCKED)"

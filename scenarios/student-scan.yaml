@@ -1,0 +1,10 @@
+# A student card is read and decided. The result depends on the simulated
+# clock: GRANTED inside opening hours, OUTSIDE_HOURS otherwise.
+name: SCMS student card read
+version: 1
+steps:
+  - wait-serial: "[ENTRANCE] terminal ready"
+  - set-control: { part-id: entry_rfid, control: card, value: 1 }
+  - set-control: { part-id: entry_rfid, control: tagPresent, value: 1 }
+  - wait-serial: "ENTRY uid=11223344 name=Okello John"
+  - set-control: { part-id: entry_rfid, control: tagPresent, value: 0 }
